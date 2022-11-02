@@ -17,6 +17,7 @@ function Box({
     block: "grey",
     start: "lightgreen",
     end: "red",
+    visited: "skyblue",
   };
 
   const colorset = {
@@ -24,6 +25,7 @@ function Box({
     block: 1,
     start: 2,
     end: 3,
+    visited: 4,
   };
 
   const color = colorCat[colorcode];
@@ -38,31 +40,41 @@ function Box({
 
   const onSubmitHandler = (e) => {
     console.log(i, j);
+    if(e.type==="mouseover" && e.ctrlKey===false) return;
     setGrid((grid) =>
       grid.map((item, I) => {
         return item.map((val, J) => {
-          if (selectval === "start" && I === start[0] && J === start[1]) {
+          if (selectval === "start" && I === start[0] && J === start[1] && e.altKey===false) {
             return 0;
           }
-          if (selectval === "end" && I === end[0] && J === end[1]) {
+          if (selectval === "end" && I === end[0] && J === end[1] && e.altKey===false) {
             return 0;
           }
           if (I === i && J === j) {
+            if(e.altKey===true) {
+                if(val===2) {
+                    setStart([-1,-1]);
+                }
+                else if(val===3) {
+                    setEnd([-1,-1]);
+                }
+                return 0;
+            }
             return colorset[selectval];
           }
           return val;
         });
       })
     );
-    if(selectval==="start") {
+    if(selectval==="start" && e.altKey===false) {
         setStart([i,j])
     }
-    if(selectval==="end") {
+    if(selectval==="end" && e.altKey===false) {
         setEnd([i,j])
     }
   };
 
-  return <div ref={reference} onClick={onSubmitHandler} style={s}></div>;
+  return <div ref={reference} onClick={onSubmitHandler} onMouseOver={onSubmitHandler} style={s}></div>;
 }
 
 export default Box;

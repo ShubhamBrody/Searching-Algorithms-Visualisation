@@ -7,3 +7,4 @@
 7-reset button
 8-algo selsct dropdown
 9-disable the blocks click when the algorithm runs
+10-Play button and Replay button

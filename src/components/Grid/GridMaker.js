@@ -2,16 +2,16 @@ import Box from "./Box";
 import { useRef, useState } from "react";
 
 function GridMaker({ rows, cols }) {
-  const width = 50;
+  const width = 30;
   const [grid, setGrid] = useState(
-    Array(rows).fill(Array(cols).fill(0))
+    Array(rows).fill(Array(cols).fill(4))
   );
   const [selectval, setSelectval] = useState("block");
   var r = useRef(null);
   var refs = Array(rows).fill(Array(cols).fill(r));
   const [start, setStart] = useState([-1, -1]);
   const [end, setEnd] = useState([-1, -1]);
-  const colornames = ["normal", "block", "start", "end"];
+  const colornames = ["normal", "block", "start", "end", "visited"];
 
   return (
     <div>
