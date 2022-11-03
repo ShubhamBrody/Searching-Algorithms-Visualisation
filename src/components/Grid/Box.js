@@ -15,7 +15,7 @@ function Box({
   const colorCat = {
     normal: "transparent",
     block: "grey",
-    start: "lightgreen",
+    start: "green",
     end: "red",
     visited: "skyblue",
   };
@@ -40,7 +40,7 @@ function Box({
 
   const onSubmitHandler = (e) => {
     console.log(i, j);
-    if(e.type==="mouseover" && e.ctrlKey===false) return;
+    if(e.type==="mouseover" && (selectval==="start" || selectval==="end" || e.ctrlKey===false)) return;
     setGrid((grid) =>
       grid.map((item, I) => {
         return item.map((val, J) => {
