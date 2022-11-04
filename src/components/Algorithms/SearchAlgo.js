@@ -23,7 +23,7 @@ function dfs(start, end, grid, m, n, dirlen) {
     var X = start[0] + d[0],
       Y = start[1] + d[1];
     if (X >= 0 && X < m && Y >= 0 && Y < n && grid[X][Y] !== 1) {
-      if (dfs([X, Y], end, grid, m, n) === 1) {
+      if (dfs([X, Y], end, grid, m, n, dirlen) === 1) {
         path.push(start)
         return 1;
       }
@@ -82,7 +82,7 @@ function dijkstra(start, end, grid, m, n) {
   
 // }
 
-function Dfs({ start, end, grid, rows, cols, setVisited, setLogs, setRundfs, setPath, direction }) {
+function Dfs({ start, end, grid, rows, cols, setVisited, setLogs, setRundfs, setPath, direction, algo }) {
   console.log(rows, cols, "hi");
   visited = [];
   path = [];
@@ -93,11 +93,13 @@ function Dfs({ start, end, grid, rows, cols, setVisited, setLogs, setRundfs, set
     setLogs("No END block found! Please provide a END block!")
   } else {
     setLogs("Running Internal Algorithm...")
-    if (bfs(start, end, grid, rows, cols, direction) === 1) {
-      console.log("path",path)
+    if (algo==="DFS" && dfs(start, end, grid, rows, cols, direction) === 1) {
       setLogs("Algorithm Complete! Path Exists")
       setVisited(visited);
-      // path.shift()
+      setPath(path);
+    } else if(algo==="BFS" && bfs(start, end, grid, rows, cols, direction) === 1) {
+      setLogs("Algorithm Complete! Path Exists")
+      setVisited(visited);
       setPath(path);
     } else {
       setLogs("Algorithm Complete! Path Doesn't Exist")

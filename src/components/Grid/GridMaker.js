@@ -17,6 +17,7 @@ function GridMaker({ rows, cols }) {
   const defaultlog = "Welcome to Search Algorithm Visualiser!";
   const [logs, setLogs] = useState(defaultlog);
   const [direction, setDirection] = useState(8);
+  const [algo, setAlgo] = useState("DFS");
 
   useEffect(() => {
     var I = -1,
@@ -68,7 +69,7 @@ function GridMaker({ rows, cols }) {
             });
           });
         });
-    }, 10);
+    }, 5);
     var boxesvisperc =
       (visitedarray.length * 100) / (rows * cols - countblocks - 1);
     var redundantblocks =
@@ -106,12 +107,18 @@ function GridMaker({ rows, cols }) {
         <option value="start">Start</option>
         <option value="end">End</option>
       </select>
+      <select value={algo} onChange={(e) => {
+          setAlgo(e.target.value);
+        }}>
+        <option value="DFS">Depth First Search</option>
+        <option value="BFS">Breadth First Search</option>
+      </select>
       <button
         onClick={(e) => {
           setRundfs((prev) => !prev);
         }}
       >
-        Start Dfs
+        Start Simulation
       </button>
       <select value={direction} onChange={(e) => {
           setDirection(e.target.value);
@@ -170,6 +177,7 @@ function GridMaker({ rows, cols }) {
           setVisited={setVisitedarray}
           setPath={setPath}
           direction={direction}
+          algo={algo}
         />
       )}
       <textarea
