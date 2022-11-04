@@ -64,7 +64,7 @@ function GridMaker({ rows, cols }) {
       if (I >= visitedarray.length) {
         clearInterval(st);
         console.log("Path received", path);
-        pst = setInterval(pathtrace, 5);
+        pst = setInterval(pathtrace, 10);
         return;
       }
       if (
@@ -82,7 +82,7 @@ function GridMaker({ rows, cols }) {
             });
           });
         });
-    }, 5);
+    }, 15);
     var boxesvisperc =
       (visitedarray.length * 100) / (rows * cols - countblocks - 1);
     var redundantblocks =
