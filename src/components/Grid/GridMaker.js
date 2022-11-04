@@ -11,26 +11,48 @@ function GridMaker({ rows, cols }) {
   const [start, setStart] = useState([-1, -1]);
   const [end, setEnd] = useState([-1, -1]);
   const [rundfs, setRundfs] = useState(false);
-  const colornames = ["normal", "block", "start", "end", "visited"];
+  const colornames = ["normal", "block", "start", "end", "visited", "path"];
   const [visitedarray, setVisitedarray] = useState([]);
-  const defaultlog = "Welcome to Search Algorithm Visualiser!"
+  const [path, setPath] = useState([]);
+  const defaultlog = "Welcome to Search Algorithm Visualiser!";
   const [logs, setLogs] = useState(defaultlog);
+  const [direction, setDirection] = useState(8);
 
   useEffect(() => {
-    var I = -1;
+    var I = -1,
+      J = -1;
     console.log(visitedarray, rundfs);
     if (visitedarray.length === 0 && grid) return;
-    console.log("came here", visitedarray);
-    var countblocks=0
-    var st = setInterval(() => {
-      ++I;
-      console.log("I:", I, "vis:", visitedarray.length);
-      if (I >= visitedarray.length) {
-        clearInterval(st);
+    var countblocks = 0;
+    var pst;
+    const pathtrace = () => {
+      ++J;
+      if (J >= path.length) {
+        clearInterval(pst);
         return;
       }
-      console.log(visitedarray[I]);
-      console.log("GRID SIZE : ", grid.length);
+      if (
+        JSON.stringify(path[J]) !== JSON.stringify(start) &&
+        JSON.stringify(path[J]) !== JSON.stringify(end)
+      )
+        setGrid((prev) => {
+          console.log("pathtrace", prev);
+          return prev.map((row, i) => {
+            return row.map((val, j) => {
+              if (i === path[J][0] && j === path[J][1]) return 5;
+              return val;
+            });
+          });
+        });
+    };
+    var st = setInterval(() => {
+      ++I;
+      if (I >= visitedarray.length) {
+        clearInterval(st);
+        console.log("Path received", path);
+        pst = setInterval(pathtrace, 5);
+        return;
+      }
       if (
         JSON.stringify(visitedarray[I]) !== JSON.stringify(start) &&
         JSON.stringify(visitedarray[I]) !== JSON.stringify(end)
@@ -41,17 +63,23 @@ function GridMaker({ rows, cols }) {
             return row.map((val, j) => {
               if (i === visitedarray[I][0] && j === visitedarray[I][1])
                 return 4;
-              if(val===1) ++countblocks
+              if (val === 1) ++countblocks;
               return val;
             });
           });
-          // prev[visitedarray[i][0]][visitedarray[i][1]] = 4;
-          // return prev
         });
-        var boxesvisperc = (visitedarray.length*100)/(rows*cols - countblocks - 2);
-        setLogs("The number of blocks visited to find the end is : "+boxesvisperc.toFixed(2)+"%");
     }, 10);
-    
+    var boxesvisperc =
+      (visitedarray.length * 100) / (rows * cols - countblocks - 1);
+    var redundantblocks =
+      ((visitedarray.length - path.length + 1) * 100) / visitedarray.length;
+    setLogs(
+      "The number of blocks visited to find the end is : " +
+        boxesvisperc.toFixed(2) +
+        "%.   The number of redundant blocks(visited but not considered in path is : " +
+        redundantblocks.toFixed(2) +
+        "%."
+    );
   }, [visitedarray]);
 
   const resetvisited = (e) => {
@@ -59,7 +87,7 @@ function GridMaker({ rows, cols }) {
     setGrid((prev) => {
       return prev.map((row, i) => {
         return row.map((val, j) => {
-          if (val === 4) return 0;
+          if (val === 4 || val === 5) return 0;
           return val;
         });
       });
@@ -85,6 +113,12 @@ function GridMaker({ rows, cols }) {
       >
         Start Dfs
       </button>
+      <select value={direction} onChange={(e) => {
+          setDirection(e.target.value);
+        }}>
+        <option value={4}>4-directional movement</option>
+        <option value={8}>8-directional movement</option>
+      </select>
       <button
         onClick={(e) => {
           resetvisited();
@@ -134,9 +168,16 @@ function GridMaker({ rows, cols }) {
           rows={rows}
           cols={cols}
           setVisited={setVisitedarray}
+          setPath={setPath}
+          direction={direction}
         />
       )}
-      <textarea style={{margin: '10px auto', textAlign: 'center'}} value={logs} rows={2} cols={150}></textarea>
+      <textarea
+        style={{ margin: "10px auto", textAlign: "center" }}
+        value={logs}
+        rows={2}
+        cols={150}
+      ></textarea>
     </div>
   );
 }

@@ -14,10 +14,11 @@ function Box({
 }) {
   const colorCat = {
     normal: "transparent",
-    block: "brown",
+    block: "grey",
     start: "green",
     end: "red",
     visited: "skyblue",
+    path: "brown",
   };
 
   const colorset = {
@@ -26,6 +27,7 @@ function Box({
     start: 2,
     end: 3,
     visited: 4,
+    path: 5,
   };
 
   const color = colorCat[colorcode];
@@ -39,15 +41,28 @@ function Box({
   };
 
   const onSubmitHandler = (e) => {
-    console.log(i, j);
     if (
       e.type === "mouseover" &&
       (selectval === "start" || selectval === "end" || e.ctrlKey === false)
     )
       return;
+      console.log("THE SATRT IS", start, "THE CURRENT IS", i, j)
+    if(selectval!=='start' && i===start[0] && j===start[1]) setStart([-1,-1])
+    if(selectval!=='end' && j===end[0] && j===end[1]) setEnd([-1,-1])
     setGrid((grid) =>
       grid.map((item, I) => {
         return item.map((val, J) => {
+          if (I === i && J === j) {
+            if (e.altKey === true) {
+              if (val === 2) {
+                setStart([-1, -1]);
+              } else if (val === 3) {
+                setEnd([-1, -1]);
+              }
+              return 0;
+            }
+            return colorset[selectval];
+          }
           if (
             selectval === "start" &&
             I === start[0] &&
@@ -63,17 +78,6 @@ function Box({
             e.altKey === false
           ) {
             return 0;
-          }
-          if (I === i && J === j) {
-            if (e.altKey === true) {
-              if (val === 2) {
-                setStart([-1, -1]);
-              } else if (val === 3) {
-                setEnd([-1, -1]);
-              }
-              return 0;
-            }
-            return colorset[selectval];
           }
           return val;
         });
