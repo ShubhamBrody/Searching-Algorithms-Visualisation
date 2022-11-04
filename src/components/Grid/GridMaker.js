@@ -120,12 +120,14 @@ function GridMaker({ rows, cols }) {
           onChange={(e) => {
             setSelectval(e.target.value);
           }}
+          title="Select block to paint on graph"
         >
           <option value="block">Block</option>
           <option value="start">Start</option>
           <option value="end">End</option>
         </select>
         <select
+          title="Select Algorithm to find path"
           style={buttonstyle}
           value={algo}
           onChange={(e) => {
@@ -136,6 +138,7 @@ function GridMaker({ rows, cols }) {
           <option value="BFS">Breadth First Search</option>
         </select>
         <select
+          title="Determine whether the start block can move in 4 or 8 directions"
           style={buttonstyle}
           value={direction}
           onChange={(e) => {
@@ -150,11 +153,13 @@ function GridMaker({ rows, cols }) {
           onClick={(e) => {
             resetvisited();
           }}
+          title="Removes blue and red blocks and makes the grid ready for another simulation"
         >
           Remove Visited
         </button>
         <button
           style={buttonstyle}
+          title="Removes everything from the grid, for making a fresh graph"
           onClick={(e) => {
             window.location.reload();
           }}
@@ -166,6 +171,7 @@ function GridMaker({ rows, cols }) {
           onClick={(e) => {
             setRundfs((prev) => !prev);
           }}
+          title="Starts the simulation"
         >
           Start Simulation
         </button>
@@ -174,6 +180,7 @@ function GridMaker({ rows, cols }) {
           onClick={(e) => {
             navigate("/guide");
           }}
+          title="Access the guide"
         >
           Help
         </button>
@@ -221,7 +228,7 @@ function GridMaker({ rows, cols }) {
         />
       )}
       <textarea
-        style={{ margin: "10px auto", textAlign: "center" }}
+        style={{ margin: "10px auto", textAlign: "center", textSize: "2rem" }}
         value={logs}
         rows={2}
         cols={150}
