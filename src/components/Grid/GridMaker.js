@@ -136,6 +136,7 @@ function GridMaker({ rows, cols }) {
         >
           <option value="DFS">Depth First Search</option>
           <option value="BFS">Breadth First Search</option>
+          <option value="DJK">Dijkstra's Single Source Shortest Path(Manhattan Distance as cost)</option>
         </select>
         <select
           title="Determine whether the start block can move in 4 or 8 directions"
