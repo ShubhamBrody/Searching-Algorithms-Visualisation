@@ -14,7 +14,7 @@ function Box({
 }) {
   const colorCat = {
     normal: "transparent",
-    block: "grey",
+    block: "brown",
     start: "green",
     end: "red",
     visited: "skyblue",
@@ -35,30 +35,43 @@ function Box({
     width: width,
     backgroundColor: color,
     border: "1px solid black",
-    transition: "all 0.3s ease-in"
+    transition: "all 0.3s ease-in",
   };
 
   const onSubmitHandler = (e) => {
     console.log(i, j);
-    if(e.type==="mouseover" && (selectval==="start" || selectval==="end" || e.ctrlKey===false)) return;
+    if (
+      e.type === "mouseover" &&
+      (selectval === "start" || selectval === "end" || e.ctrlKey === false)
+    )
+      return;
     setGrid((grid) =>
       grid.map((item, I) => {
         return item.map((val, J) => {
-          if (selectval === "start" && I === start[0] && J === start[1] && e.altKey===false) {
+          if (
+            selectval === "start" &&
+            I === start[0] &&
+            J === start[1] &&
+            e.altKey === false
+          ) {
             return 0;
           }
-          if (selectval === "end" && I === end[0] && J === end[1] && e.altKey===false) {
+          if (
+            selectval === "end" &&
+            I === end[0] &&
+            J === end[1] &&
+            e.altKey === false
+          ) {
             return 0;
           }
           if (I === i && J === j) {
-            if(e.altKey===true) {
-                if(val===2) {
-                    setStart([-1,-1]);
-                }
-                else if(val===3) {
-                    setEnd([-1,-1]);
-                }
-                return 0;
+            if (e.altKey === true) {
+              if (val === 2) {
+                setStart([-1, -1]);
+              } else if (val === 3) {
+                setEnd([-1, -1]);
+              }
+              return 0;
             }
             return colorset[selectval];
           }
@@ -66,15 +79,22 @@ function Box({
         });
       })
     );
-    if(selectval==="start" && e.altKey===false) {
-        setStart([i,j])
+    if (selectval === "start" && e.altKey === false) {
+      setStart([i, j]);
     }
-    if(selectval==="end" && e.altKey===false) {
-        setEnd([i,j])
+    if (selectval === "end" && e.altKey === false) {
+      setEnd([i, j]);
     }
   };
 
-  return <div ref={reference} onClick={onSubmitHandler} onMouseOver={onSubmitHandler} style={s}></div>;
+  return (
+    <div
+      ref={reference}
+      onClick={onSubmitHandler}
+      onMouseOver={onSubmitHandler}
+      style={s}
+    ></div>
+  );
 }
 
 export default Box;

@@ -72,16 +72,35 @@ function bfs(start, end, grid, m, n) {
   return 0
 }
 
-function Dfs({ start, end, grid, rows, cols, setVisited, setRundfs }) {
+function dijkstra(start, end, grid, m, n) {
+  
+}
+
+// function calchval() {
+  
+// }
+
+// function astar(start, end, grid, m, n) {
+  
+// }
+
+function Dfs({ start, end, grid, rows, cols, setVisited, setLogs, setRundfs }) {
   console.log(rows, cols, "hi");
   visited = [];
   setRundfs(false);
-  if (bfs(start, end, grid, rows, cols) === 1) {
-    console.log("FOUND TARGET");
-    console.log(visited);
-    setVisited(visited);
+  if(start[0]===-1) {
+    setLogs("No START block found! Please provide a START block!")
+  } else if(end[0]===-1) {
+    setLogs("No END block found! Please provide a END block!")
   } else {
-    console.log("NOT FOUND", visited);
+    setLogs("Running Internal Algorithm...")
+    if (bfs(start, end, grid, rows, cols) === 1) {
+      setLogs("Algorithm Complete! Path Exists")
+      setVisited(visited);
+    } else {
+      setLogs("Algorithm Complete! Path Doesn't Exist")
+      console.log("NOT FOUND", visited);
+    }
   }
 }
 
