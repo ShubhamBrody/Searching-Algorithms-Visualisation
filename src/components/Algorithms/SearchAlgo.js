@@ -70,18 +70,6 @@ function bfs(start, end, grid, m, n, dirlen) {
   return found
 }
 
-function dijkstra(start, end, grid, m, n) {
-
-}
-
-// function calchval() {
-  
-// }
-
-// function astar(start, end, grid, m, n) {
-  
-// }
-
 function Dfs({ start, end, grid, rows, cols, setVisited, setLogs, setRundfs, setPath, direction, algo }) {
   console.log(rows, cols, "hi");
   visited = [];

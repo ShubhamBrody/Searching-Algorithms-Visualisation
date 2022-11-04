@@ -1,9 +1,11 @@
 import Box from "./Box";
 import SearchAlgo from "../Algorithms/SearchAlgo";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function GridMaker({ rows, cols }) {
   const width = 30;
+  const navigate = useNavigate();
   const [grid, setGrid] = useState(Array(rows).fill(Array(cols).fill(0)));
   const [selectval, setSelectval] = useState("block");
   var r = useRef(null);
@@ -18,6 +20,17 @@ function GridMaker({ rows, cols }) {
   const [logs, setLogs] = useState(defaultlog);
   const [direction, setDirection] = useState(8);
   const [algo, setAlgo] = useState("DFS");
+  const [simstart, setSimstart] = useState(false);
+
+  const buttonstyle = {
+    height: "2rem",
+    margin: ".5rem",
+    border: "none",
+    backgroundColor: "#006abc",
+    color: "white",
+    borderRadius: "2px",
+    transition: "all 0.5s ease-in-out",
+  };
 
   useEffect(() => {
     var I = -1,
@@ -96,75 +109,102 @@ function GridMaker({ rows, cols }) {
   };
 
   return (
-    <div>
-      <select
-        value={selectval}
-        onChange={(e) => {
-          setSelectval(e.target.value);
-        }}
-      >
-        <option value="block">Block</option>
-        <option value="start">Start</option>
-        <option value="end">End</option>
-      </select>
-      <select value={algo} onChange={(e) => {
-          setAlgo(e.target.value);
-        }}>
-        <option value="DFS">Depth First Search</option>
-        <option value="BFS">Breadth First Search</option>
-      </select>
-      <button
-        onClick={(e) => {
-          setRundfs((prev) => !prev);
-        }}
-      >
-        Start Simulation
-      </button>
-      <select value={direction} onChange={(e) => {
-          setDirection(e.target.value);
-        }}>
-        <option value={4}>4-directional movement</option>
-        <option value={8}>8-directional movement</option>
-      </select>
-      <button
-        onClick={(e) => {
-          resetvisited();
-        }}
-      >
-        Remove Visited
-      </button>
-      <button
-        onClick={(e) => {
-          window.location.reload();
-        }}
-      >
-        Reset
-      </button>
-      {grid &&
-        grid.map((item, i) => {
-          return (
-            <div style={{ display: "flex" }}>
-              {item.map((b, j) => {
-                return (
-                  <Box
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    setGrid={setGrid}
-                    colorcode={colornames[b]}
-                    selectval={selectval}
-                    i={i}
-                    j={j}
-                    reference={refs[i][j]}
-                    width={width}
-                    height={width}
-                    start={start}
-                    end={end}
-                  />
-                );
-              })}
-            </div>
-          );
-        })}
+    <div style={{ margin: "0" }}>
+      <div style={{ backgroundColor: "#333" }}>
+        <h3 style={{ margin: "0", marginLeft: "0.5rem", color: "white" }}>
+          Search Algorithm Visualisation
+        </h3>
+        <select
+          style={buttonstyle}
+          value={selectval}
+          onChange={(e) => {
+            setSelectval(e.target.value);
+          }}
+        >
+          <option value="block">Block</option>
+          <option value="start">Start</option>
+          <option value="end">End</option>
+        </select>
+        <select
+          style={buttonstyle}
+          value={algo}
+          onChange={(e) => {
+            setAlgo(e.target.value);
+          }}
+        >
+          <option value="DFS">Depth First Search</option>
+          <option value="BFS">Breadth First Search</option>
+        </select>
+        <select
+          style={buttonstyle}
+          value={direction}
+          onChange={(e) => {
+            setDirection(e.target.value);
+          }}
+        >
+          <option value={4}>4-directional movement</option>
+          <option value={8}>8-directional movement</option>
+        </select>
+        <button
+          style={buttonstyle}
+          onClick={(e) => {
+            resetvisited();
+          }}
+        >
+          Remove Visited
+        </button>
+        <button
+          style={buttonstyle}
+          onClick={(e) => {
+            window.location.reload();
+          }}
+        >
+          Reset
+        </button>
+        <button
+          style={buttonstyle}
+          onClick={(e) => {
+            setRundfs((prev) => !prev);
+          }}
+        >
+          Start Simulation
+        </button>
+        <button
+          style={buttonstyle}
+          onClick={(e) => {
+            navigate("/guide");
+          }}
+        >
+          Help
+        </button>
+      </div>
+      <div style={{ marginTop: "0.125rem" }}>
+        {grid &&
+          grid.map((item, i) => {
+            return (
+              <div style={{ display: "flex" }}>
+                {item.map((b, j) => {
+                  return (
+                    <Box
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      setGrid={setGrid}
+                      colorcode={colornames[b]}
+                      selectval={selectval}
+                      i={i}
+                      j={j}
+                      reference={refs[i][j]}
+                      width={width}
+                      height={width}
+                      start={start}
+                      end={end}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
+      </div>
       {rundfs && (
         <SearchAlgo
           setRundfs={setRundfs}
